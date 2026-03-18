@@ -1,0 +1,683 @@
+:root {
+    --bg-base: #06090f;
+    --blob-1: #3b82f6; /* Blueish */
+    --blob-2: #8b5cf6; /* Violet */
+    --blob-3: #10b981; /* Emerald */
+    
+    --glass-bg: rgba(20, 24, 34, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    --accent-blue: #3b82f6;
+    --accent-blue-glow: rgba(59, 130, 246, 0.5);
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+    
+    --font-sans: 'Outfit', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-base);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    position: relative;
+    padding-bottom: 40px;
+}
+
+/* ================= BACKGROUND MESH ANIMATION ================= */
+.mesh-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    filter: blur(90px);
+    opacity: 0.5;
+}
+
+.mesh-blob {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 22s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 55vw; height: 55vw;
+    background: radial-gradient(circle, var(--blob-1), transparent 65%);
+    top: -10%; left: -5%;
+}
+
+.blob-2 {
+    width: 65vw; height: 65vw;
+    background: radial-gradient(circle, var(--blob-2), transparent 65%);
+    bottom: -15%; right: -10%;
+    animation-delay: -3s;
+    animation-duration: 28s;
+}
+
+.blob-3 {
+    width: 45vw; height: 45vw;
+    background: radial-gradient(circle, var(--blob-3), transparent 65%);
+    top: 30%; left: 35%;
+    animation-delay: -7s;
+    animation-duration: 20s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(8%, 12%) scale(1.1); }
+    66% { transform: translate(-8%, 5%) scale(0.9); }
+    100% { transform: translate(5%, -10%) scale(1.05); }
+}
+
+/* ================= COMPONENT GLOBALS ================= */
+.glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+/* ================= NAVIGATION BAR ================= */
+.navbar {
+    width: 90%;
+    max-width: 600px;
+    margin-top: 35px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    z-index: 10;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding-left: 10px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+}
+
+.brand-icon {
+    color: var(--accent-blue);
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.08);
+}
+
+.nav-btn.active {
+    background: var(--text-primary);
+    color: var(--bg-base);
+    box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+}
+
+.nav-text {
+    display: inline-block;
+}
+
+@media (max-width: 480px) {
+    .nav-text { font-size: 0.9rem; }
+    .nav-btn { padding: 10px 15px; }
+}
+
+/* ================= APP WRAPPER & SECTIONS ================= */
+.app-wrapper {
+    width: 100%;
+    max-width: 900px; /* Expanded for Side-by-Side */
+    padding: 20px;
+    margin-top: 20px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.app-section {
+    width: 100%;
+    animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.app-section.glass-effect {
+    /* For standalone sections like Timer */
+    border-radius: 36px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Side-by-Side Layout for Stop Watch */
+.split-layout {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+
+.split-box {
+    flex: 1;
+    border-radius: 36px;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    min-height: 520px;
+}
+
+.flex-col {
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+@media (max-width: 768px) {
+    .split-layout {
+        flex-direction: column;
+    }
+    .split-box {
+        min-height: auto;
+    }
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.97) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.section-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.margin-top-lg {
+    margin-top: 30px;
+}
+
+/* ================= DISPLAY CLOCK AREA ================= */
+.display-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-shrink: 0;
+}
+
+/* Stopwatch Rings */
+.time-ring {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0%, transparent 100%);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 25px rgba(0,0,0,0.3);
+    border: 3px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.3s ease;
+}
+
+.time-ring.running {
+    border-color: rgba(59, 130, 246, 0.25);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 40px var(--accent-blue-glow);
+}
+
+/* Timer SVG Rings */
+.timer-svg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    transform: rotate(-90deg);
+}
+.timer-bg-circle {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.04);
+    stroke-width: 2.5;
+}
+.timer-progress-circle {
+    fill: none;
+    stroke: var(--blob-1);
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-dasharray: 301.59;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+}
+.timer-progress-circle.warning {
+    stroke: var(--accent-red);
+}
+
+/* Text Displays */
+.time-text, .timer-countdown, .timer-input-group {
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    z-index: 1;
+}
+
+.time-text, .timer-countdown {
+    font-size: 3.2rem;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255,255,255,0.1);
+}
+
+.timer-countdown-hidden {
+    display: none !important;
+}
+
+.colon {
+    margin: 0 4px;
+    animation: pulse 1s infinite alternate;
+}
+
+.time-ring.running ~ .time-text .colon, 
+.timer-running .colon {
+    animation: blink 1s infinite;
+}
+
+.milliseconds {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-left: 2px;
+}
+
+/* Timer Inputs */
+.timer-input-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.input-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.time-input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 3.2rem;
+    font-weight: 700;
+    width: 70px;
+    text-align: center;
+    outline: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    text-shadow: 0 0 15px rgba(255,255,255,0.1);
+}
+.time-input:focus {
+    border-bottom: 2px solid var(--accent-blue);
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+}
+/* Hide native spin buttons */
+.time-input::-webkit-outer-spin-button,
+.time-input::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.time-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.input-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* ================= TIMER PRESETS ================= */
+.timer-presets-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+.timer-preset-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.timer-preset-btn:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-2px);
+}
+
+.timer-preset-btn:active {
+    transform: translateY(0);
+}
+
+.instruction-text {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    opacity: 0.8;
+    text-align: center;
+}
+
+/* ================= CONTROLS ================= */
+.controls.flex-gap {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-top: auto;
+}
+
+.btn {
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+.btn:active { transform: scale(0.9); }
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.main-action-btn {
+    width: 78px; height: 78px;
+    background: var(--text-primary);
+    color: var(--bg-base);
+    box-shadow: 0 10px 25px -5px rgba(255,255,255,0.25);
+}
+
+.action-btn {
+    width: 58px; height: 58px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
+}
+
+.action-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+}
+
+.invisible-placeholder {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ================= LAPS SECTION ================= */
+.laps-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.laps-header .title {
+    margin-bottom: 0;
+}
+
+.btn-icon {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+}
+
+.btn-icon:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.laps-scroll-area {
+    flex: 1;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+    padding-right: 5px;
+}
+
+.laps-scroll-area::-webkit-scrollbar { width: 6px; }
+.laps-scroll-area::-webkit-scrollbar-track { background: transparent; }
+.laps-scroll-area::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+.laps-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    margin-top: 40px;
+    font-size: 0.95rem;
+}
+
+.lap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    border: 1px solid transparent;
+}
+
+.lap-item.best-lap {
+    color: var(--accent-green);
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.15);
+}
+
+.lap-item.worst-lap {
+    color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.15);
+}
+
+.lap-index {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.lap-time {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.15rem;
+}
+
+.lap-diff {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-right: 15px;
+    font-family: var(--font-mono);
+}
+
+/* ================= MODAL & POPUP ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: rgba(20, 24, 34, 0.85);
+    padding: 40px;
+    border-radius: 32px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.ringing-bell {
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: bellShake 1s infinite;
+}
+
+.modal-content h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.modal-btn {
+    background: var(--text-primary);
+    color: var(--bg-base);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255,255,255,0.2);
+}
+
+@keyframes bellShake {
+    0%, 100% { transform: rotate(0); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-10deg); }
+    20%, 40%, 60%, 80% { transform: rotate(10deg); }
+}
+
+/* ================= MISC/ANIMATIONS ================= */
+.shortcuts-hint {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.shortcut-key {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3px 7px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-primary);
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
